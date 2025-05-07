@@ -1,6 +1,8 @@
+import 'package:bus_reservation_flutter_starter/providers/app_data_provider.dart';
 import 'package:bus_reservation_flutter_starter/utils/helper_functions.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 
 import '../utils/constants.dart';
 
@@ -179,12 +181,18 @@ class _BusSearchPageState extends State<BusSearchPage> {
 
   void _search() {
     if (departureDate == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Please select a departure date')));
+      showMsg(context, emptyDateErrMessage);
       return;
     }
     if (_formKey.currentState!.validate()) {
       // Proceed to search logic
+        Provider.of<AppDataProvider>(context,listen:false).getRouteByCityFromAndCityTo(fromCity!, toCity!).then((route){
+          if(route==null){
+            showMsg(context, "No route Found");
+            return;
+          }
+          Navigator.pushReplacementNamed(context ,routeNameSearchResultPage,arguments: [route,getFormattedDate(departureDate!)] );
+        });
     }
   }
 }

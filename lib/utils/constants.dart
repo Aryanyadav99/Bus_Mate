@@ -7,6 +7,7 @@ const String reservationCancelled = 'Cancelled';
 const String reservationActive = 'Active';
 const String reservationExpired = 'Expired';
 const String emptyFieldErrMessage = 'This field must not be empty';
+const String emptyDateErrMessage = 'Please Select the departure date';
 const String accessToken = 'accessToken';
 const String loginTime = 'loginTime';
 const String expirationDuration = 'expirationDuration';

@@ -1,9 +1,19 @@
 import 'package:bus_reservation_flutter_starter/pages/bus_search_page.dart';
+import 'package:bus_reservation_flutter_starter/pages/search_result_page.dart';
+import 'package:bus_reservation_flutter_starter/pages/seat_plan_page.dart';
+import 'package:bus_reservation_flutter_starter/providers/app_data_provider.dart';
+import 'package:bus_reservation_flutter_starter/utils/constants.dart';
 import 'package:flutter/material.dart';
-
+import 'package:provider/provider.dart';
 void main() {
-  runApp(const MyApp());
-}
+
+    runApp(
+      ChangeNotifierProvider(
+        create: (context) => AppDataProvider(), // Replace with your actual ChangeNotifier
+        child: const MyApp(),
+      ),
+    );
+  }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -14,10 +24,28 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: Colors.deepPurple,
+          brightness: Brightness.dark,
+        ),
+        scaffoldBackgroundColor: Colors.black,
         useMaterial3: true,
+        appBarTheme: AppBarTheme(
+          backgroundColor: Colors.black,
+          foregroundColor: Colors.white,
+          elevation: 0,
+        ),
+        cardColor: Colors.grey[900],
+        dialogBackgroundColor: Colors.grey[900],
+        iconTheme: IconThemeData(color: Colors.white70),
+        textTheme: Typography.whiteCupertino, // Or use ThemeData.dark().textTheme
       ),
       home: const BusSearchPage(),
+      routes: {
+        routeNameHome:(context) => const BusSearchPage(),
+        routeNameSearchResultPage:(context)=>const SearchResultPage(),
+        routeNameSeatPlanPage:(context)=>const SeatPlanPage(),
+      },
     );
   }
 }
