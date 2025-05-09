@@ -1,8 +1,12 @@
 import 'package:bus_reservation_flutter_starter/customwidgets/seat_plan_view_widget.dart';
 import 'package:bus_reservation_flutter_starter/models/bus_schedule.dart';
+import 'package:bus_reservation_flutter_starter/providers/app_data_provider.dart';
 import 'package:bus_reservation_flutter_starter/utils/colors.dart';
 import 'package:bus_reservation_flutter_starter/utils/constants.dart';
+import 'package:bus_reservation_flutter_starter/utils/helper_functions.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
 
 class SeatPlanPage extends StatefulWidget {
   const SeatPlanPage({super.key});
@@ -26,9 +30,22 @@ class _SeatPlanPageState extends State<SeatPlanPage> {
     final argList = ModalRoute.of(context)!.settings.arguments as List;
     schedule = argList[0];
     departureDate = argList[1];
+    _getData();
     super.didChangeDependencies();
   }
-
+  _getData() async{
+    final resList= await Provider.of<AppDataProvider>(context,listen:false)
+        .getReservationsByScheduleAndDepartureDate(schedule.scheduleId!, departureDate);
+    setState(() {
+      isDataLoading=false;
+    });
+    List<String>seats=[];
+    for(final res in resList){
+      totalSeatBooked+=res.totalSeatBooked;
+      seats.add((res.seatNumbers));
+    }
+    bookedSeatNumbers=seats.join(',');
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -92,20 +109,43 @@ class _SeatPlanPageState extends State<SeatPlanPage> {
               ),
             ),
             //put seat plan page here (complex)
+            if(!isDataLoading)
             Expanded(
               child: SingleChildScrollView(
-                child: SeatPlanViewWidget(
-                  totalSeat: schedule.bus.totalSeat,
-                  bookedSeatNumbers: bookedSeatNumbers,
-                  totalSeatBooked: totalSeatBooked,
-                  isBusinessClass: schedule.bus.busType == busTypeACBusiness,
-                  onSeatSelected: (value, seat) {},
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 0,top:20 ),
+                  child: SeatPlanViewWidget(
+                    totalSeat: schedule.bus.totalSeat,
+                    bookedSeatNumbers: bookedSeatNumbers,
+                    totalSeatBooked: totalSeatBooked,
+                    isBusinessClass: schedule.bus.busType == busTypeACBusiness,
+                    onSeatSelected: (value, seat) {
+                      if(value){
+                        selectedSeats.add(seat);
+                      }
+                      else{
+                        selectedSeats.remove(seat);
+                      }
+                      selectedSeatStringNotifier.value=selectedSeats.join(',');
+                    },
+                  ),
                 ),
               ),
             ),
-            OutlinedButton(
-              onPressed: () {},
-              child: const Text('NEXT'),
+            Padding(
+              padding: const EdgeInsets.all(40.0),
+              child: OutlinedButton(
+                onPressed: () {
+                  if(selectedSeats.isEmpty){
+                    showMsg(context, 'Please Select Your Seat first');
+                    return;
+                  }
+                  Navigator.pushNamed(context, routeNameBookingConfirmationPage,
+                  arguments: [departureDate,schedule,selectedSeatStringNotifier.value,selectedSeats.length]);
+                },
+                child: const Text('NEXT',
+                style: TextStyle(fontSize: 25),),
+              ),
             )
           ],
         ),

@@ -14,7 +14,6 @@ class SearchResultPage extends StatelessWidget {
     final BusRoute route = argList[0];
     final String departureDate = argList[1];
     return Scaffold(
-      backgroundColor: Colors.black,
       appBar: AppBar(
         backgroundColor: Colors.grey[900],
         title: const Text("Search Results", style: TextStyle(color: Colors.white)),

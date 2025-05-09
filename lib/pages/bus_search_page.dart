@@ -23,16 +23,14 @@ class _BusSearchPageState extends State<BusSearchPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF121212),
       appBar: AppBar(
+        backgroundColor: Colors.grey[900],
         title: Text('Search Bus',
             style: GoogleFonts.poppins(
               fontWeight: FontWeight.w600,
               color: Colors.white,
-            )),
-        backgroundColor: const Color(0xFF1F1F1F),
+            ),),
         centerTitle: true,
-        elevation: 4,
       ),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
@@ -191,7 +189,7 @@ class _BusSearchPageState extends State<BusSearchPage> {
             showMsg(context, "No route Found");
             return;
           }
-          Navigator.pushReplacementNamed(context ,routeNameSearchResultPage,arguments: [route,getFormattedDate(departureDate!)] );
+          Navigator.pushNamed(context ,routeNameSearchResultPage,arguments: [route,getFormattedDate(departureDate!)] );
         });
     }
   }

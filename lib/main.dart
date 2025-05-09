@@ -1,3 +1,4 @@
+import 'package:bus_reservation_flutter_starter/pages/booking_confirmation_page.dart';
 import 'package:bus_reservation_flutter_starter/pages/bus_search_page.dart';
 import 'package:bus_reservation_flutter_starter/pages/search_result_page.dart';
 import 'package:bus_reservation_flutter_starter/pages/seat_plan_page.dart';
@@ -28,23 +29,23 @@ class MyApp extends StatelessWidget {
           seedColor: Colors.deepPurple,
           brightness: Brightness.dark,
         ),
-        scaffoldBackgroundColor: Colors.black,
+        scaffoldBackgroundColor:  const Color(0xDB191919),
         useMaterial3: true,
         appBarTheme: AppBarTheme(
-          backgroundColor: Colors.black,
+          backgroundColor: Colors.grey[900],
           foregroundColor: Colors.white,
           elevation: 0,
         ),
         cardColor: Colors.grey[900],
-        dialogBackgroundColor: Colors.grey[900],
         iconTheme: IconThemeData(color: Colors.white70),
         textTheme: Typography.whiteCupertino, // Or use ThemeData.dark().textTheme
       ),
-      home: const BusSearchPage(),
+      initialRoute:routeNameHome,
       routes: {
         routeNameHome:(context) => const BusSearchPage(),
         routeNameSearchResultPage:(context)=>const SearchResultPage(),
         routeNameSeatPlanPage:(context)=>const SeatPlanPage(),
+        routeNameBookingConfirmationPage:(context)=>const BookingConfirmationPage(),
       },
     );
   }
