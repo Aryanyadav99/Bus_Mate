@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
+import '../drawers/main_drawer.dart';
 import '../utils/constants.dart';
 
 class BusSearchPage extends StatefulWidget {
@@ -23,6 +24,7 @@ class _BusSearchPageState extends State<BusSearchPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: MainDrawer(),
       appBar: AppBar(
         backgroundColor: Colors.grey[900],
         title: Text('Search Bus',
