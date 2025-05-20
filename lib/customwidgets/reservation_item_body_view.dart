@@ -16,7 +16,7 @@ class ReservationItemBodyView extends StatelessWidget {
             Text('Customer Name: ${body.customer.customerName}'),
           Text('Customer Mobile: ${body.customer.mobile}'),
           Text('Customer Email: ${body.customer.email}'),
-          Text('Total Seats: ${body.totalSeatBooked}'),
+          Text('Total Seats: ${body.totalSeatedBooked}'),
           Text('Seat Numbers: ${body.seatNumbers}'),
           Text('Total Price: $currency${body.totalPrice}'),
         ],

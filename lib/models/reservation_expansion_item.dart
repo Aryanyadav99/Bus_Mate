@@ -1,16 +1,15 @@
-import 'package:bus_reservation_flutter_starter/models/bus_reservation.dart';
 import 'package:bus_reservation_flutter_starter/models/bus_schedule.dart';
 import 'package:bus_reservation_flutter_starter/models/customer.dart';
 
 class ReservationExpansionItem {
-  ReservationExpansionBody body;
   ReservationExpansionHeader header;
+  ReservationExpansionBody body;
   bool isExpanded;
 
   ReservationExpansionItem({
     required this.header,
     required this.body,
-     this.isExpanded= false,
+    this.isExpanded = false,
   });
 }
 
@@ -32,13 +31,13 @@ class ReservationExpansionHeader {
 
 class ReservationExpansionBody {
   Customer customer;
-  int totalSeatBooked;
+  int totalSeatedBooked;
   String seatNumbers;
   int totalPrice;
 
   ReservationExpansionBody({
     required this.customer,
-    required this.totalSeatBooked,
+    required this.totalSeatedBooked,
     required this.seatNumbers,
     required this.totalPrice,
   });

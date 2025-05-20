@@ -10,4 +10,20 @@ class AppUser {
     required this.password,
     this.role = 'Admin',
   });
+
+  Map<String, dynamic> toJson() {
+    return <String, dynamic>{
+      'id': id,
+      'userName': userName,
+      'password': password,
+      'role': role,
+    };
+  }
+
+  factory AppUser.fromJson(Map<String, dynamic> json) => AppUser(
+    id: json['id'],
+    userName: json['userName'],
+    password: json['password'],
+    role: json['role'],
+  );
 }

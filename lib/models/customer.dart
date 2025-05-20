@@ -1,13 +1,15 @@
-class Customer {
-  int? customerId;
-  String customerName;
-  String mobile;
-  String email;
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-  Customer({
-    this.customerId,
-    required this.customerName,
-    required this.mobile,
-    required this.email,
-  });
+part 'customer.freezed.dart';
+part 'customer.g.dart';
+@unfreezed
+class Customer with _$Customer{
+  factory Customer({
+    int? customerId,
+    required String customerName,
+    required String mobile,
+    required String email,
+  }) = _Customer;
+  factory Customer.fromJson(Map<String, dynamic> json) =>
+      _$CustomerFromJson(json);
 }

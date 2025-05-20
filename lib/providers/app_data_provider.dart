@@ -1,12 +1,19 @@
+import 'package:bus_reservation_flutter_starter/datasource/app_datasource_class.dart';
 import 'package:bus_reservation_flutter_starter/datasource/data_source.dart';
 import 'package:bus_reservation_flutter_starter/datasource/dummy_data_source.dart';
 import 'package:bus_reservation_flutter_starter/models/bus_schedule.dart';
-import 'package:bus_reservation_flutter_starter/models/but_route.dart';
+import 'package:bus_reservation_flutter_starter/models/bus_route.dart';
 import 'package:bus_reservation_flutter_starter/models/reservation_expansion_item.dart';
 import 'package:bus_reservation_flutter_starter/models/response_model.dart';
+import 'package:bus_reservation_flutter_starter/utils/constants.dart';
 import 'package:flutter/material.dart';
+import '../models/app_user.dart';
+import '../models/auth_response_model.dart';
 import '../models/bus_model.dart';
 import '../models/bus_reservation.dart';
+import '../models/bus_route.dart';
+import '../utils/constants.dart';
+import '../utils/helper_functions.dart';
 
 
 class AppDataProvider extends ChangeNotifier {
@@ -22,7 +29,7 @@ class AppDataProvider extends ChangeNotifier {
   List<BusRoute> get routeList => _routeList;
 
   List<BusReservation> get reservationList => _reservationList;
-  final DataSource _dataSource = DummyDataSource();
+  final DataSource _dataSource = AppDataSource();
 
 
   Future<BusRoute?> getRouteByCityFromAndCityTo(String cityFrom,
@@ -32,6 +39,15 @@ class AppDataProvider extends ChangeNotifier {
 
   Future<ResponseModel> addReservation(BusReservation reservation) {
     return _dataSource.addReservation(reservation);
+  }
+
+  Future<AuthResponseModel?> login(AppUser user) async {
+    final response = await _dataSource.login(user);
+    if(response == null) return null;
+    await saveToken(response.accessToken);
+    await saveLoginTime(response.loginTime);
+    await saveExpirationDuration(response.expirationDuration);
+    return response;
   }
 
   Future<List<BusSchedule>> getScheduleByRouteName(String routeName) async {
@@ -70,12 +86,12 @@ class AppDataProvider extends ChangeNotifier {
     return _dataSource.addSchedule(schedule);
   }
 
-  void getAllBus() async{
+  Future<void> getAllBus() async{
     _busList=await _dataSource.getAllBus();
     notifyListeners();
   }
 
-  void getAllRoutes() async{
+  Future<void> getAllRoutes() async{
     _routeList=await _dataSource.getAllRoutes();
     notifyListeners();
   }
@@ -93,7 +109,7 @@ class AppDataProvider extends ChangeNotifier {
         ),
         body: ReservationExpansionBody(
           customer: reservation.customer,
-          totalSeatBooked: reservation.totalSeatBooked,
+          totalSeatedBooked: reservation.totalSeatBooked,
           seatNumbers: reservation.seatNumbers,
           totalPrice: reservation.totalPrice,
         ),

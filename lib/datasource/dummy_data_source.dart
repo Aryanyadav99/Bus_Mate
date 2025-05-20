@@ -5,7 +5,7 @@ import 'package:bus_reservation_flutter_starter/models/auth_response_model.dart'
 import 'package:bus_reservation_flutter_starter/models/bus_model.dart';
 import 'package:bus_reservation_flutter_starter/models/bus_reservation.dart';
 import 'package:bus_reservation_flutter_starter/models/bus_schedule.dart';
-import 'package:bus_reservation_flutter_starter/models/but_route.dart';
+import 'package:bus_reservation_flutter_starter/models/bus_route.dart';
 import 'package:bus_reservation_flutter_starter/models/response_model.dart';
 import 'package:bus_reservation_flutter_starter/utils/constants.dart';
 

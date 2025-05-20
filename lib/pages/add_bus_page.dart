@@ -4,6 +4,7 @@ import 'package:bus_reservation_flutter_starter/utils/helper_functions.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../customwidgets/login_alert_dialog.dart';
 import '../datasource/temp_db.dart';
 import '../models/bus_model.dart';
 import '../utils/constants.dart';
@@ -21,6 +22,7 @@ class _AddBusPageState extends State<AddBusPage> {
   final seatController = TextEditingController();
   final nameController = TextEditingController();
   final numberController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,13 +43,12 @@ class _AddBusPageState extends State<AddBusPage> {
                   });
                 },
                 validator: (value) {
-                  if(value == null || value.isEmpty) {
+                  if (value == null || value.isEmpty) {
                     return 'Please select a Bus Type';
                   }
                 },
-                decoration: const InputDecoration(
-                    errorStyle: const TextStyle(color: Colors.white70)
-                ),
+                decoration: InputDecoration(
+                    errorStyle: const TextStyle(color: Colors.white70)),
                 isExpanded: true,
                 value: busType,
                 hint: const Text('Select Bus Type'),
@@ -113,15 +114,12 @@ class _AddBusPageState extends State<AddBusPage> {
               const SizedBox(
                 height: 5,
               ),
-              Padding(
-                padding: const EdgeInsets.all(18.0),
-                child: Center(
-                  child: SizedBox(
-                    width: 150,
-                    child: ElevatedButton(
-                      onPressed: addBus,
-                      child: const Text('ADD BUS'),
-                    ),
+              Center(
+                child: SizedBox(
+                  width: 150,
+                  child: ElevatedButton(
+                    onPressed: addBus,
+                    child: const Text('ADD BUS'),
                   ),
                 ),
               ),
@@ -135,17 +133,27 @@ class _AddBusPageState extends State<AddBusPage> {
   void addBus() {
     if (_formKey.currentState!.validate()) {
       final bus = Bus(
-        busId: TempDB.tableBus.length + 1, // remove this line if you save into MySql DB
+        //busId: TempDB.tableBus.length + 1, // remove this line if you save into MySql DB
         busName: nameController.text,
         busNumber: numberController.text,
         busType: busType!,
         totalSeat: int.parse(seatController.text),
       );
-      Provider.of<AppDataProvider>(context,listen: false).addBus(bus)
-      .then((response){
-        if(response.responseStatus==ResponseStatus.SAVED){
+      Provider.of<AppDataProvider>(context, listen: false)
+          .addBus(bus)
+          .then((response) {
+        if (response.responseStatus == ResponseStatus.SAVED) {
           showMsg(context, response.message);
           resetFields();
+        } else if (response.responseStatus == ResponseStatus.EXPIRED ||
+            response.responseStatus == ResponseStatus.UNAUTHORIZED) {
+          showLoginAlertDialog(
+            context: context,
+            message: response.message,
+            callback: () {
+              Navigator.pushNamed(context, routeNameLoginPage);
+            },
+          );
         }
       });
     }
@@ -164,6 +172,4 @@ class _AddBusPageState extends State<AddBusPage> {
     numberController.dispose();
     super.dispose();
   }
-
-
 }
