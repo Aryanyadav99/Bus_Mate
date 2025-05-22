@@ -4,7 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'constants.dart';
 
-String getFormattedDate(DateTime dt,{String pattern='dd/MM/yyyy'}){
+String getFormattedDate(DateTime dt,{String pattern='yyyy-MM-dd'}){
   return DateFormat(pattern).format(dt);
 }
 String getFormattedTime(TimeOfDay tm, {String pattern = 'HH:mm'}) {

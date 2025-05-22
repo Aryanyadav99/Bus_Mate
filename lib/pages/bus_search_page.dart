@@ -180,19 +180,20 @@ class _BusSearchPageState extends State<BusSearchPage> {
   }
 
   void _search() {
-    if (departureDate == null) {
+    if(departureDate == null) {
       showMsg(context, emptyDateErrMessage);
       return;
     }
-    if (_formKey.currentState!.validate()) {
-      // Proceed to search logic
-        Provider.of<AppDataProvider>(context,listen:false).getRouteByCityFromAndCityTo(fromCity!, toCity!).then((route){
-          if(route==null){
-            showMsg(context, "No route Found");
-            return;
-          }
-          Navigator.pushNamed(context ,routeNameSearchResultPage,arguments: [route,getFormattedDate(departureDate!)] );
-        });
+    if(_formKey.currentState!.validate()) {
+      Provider.of<AppDataProvider>(context, listen: false)
+          .getRouteByCityFromAndCityTo(fromCity!, toCity!)
+          .then((route) {
+        if(route != null) {
+          Navigator.pushNamed(context, routeNameSearchResultPage, arguments: [route, getFormattedDate(departureDate!)]);
+        } else {
+          showMsg(context, 'Could not find any route');
+        }
+      });
     }
   }
 }

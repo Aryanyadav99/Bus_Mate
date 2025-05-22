@@ -38,7 +38,10 @@ class _BookingConfirmationPageState extends State<BookingConfirmationPage> {
   @override
   void didChangeDependencies() {
     if (isFirst) {
-      final argList = ModalRoute.of(context)!.settings.arguments as List;
+      final argList = ModalRoute
+          .of(context)!
+          .settings
+          .arguments as List;
       departureDate = argList[0];
       schedule = argList[1];
       seatNumbers = argList[2];
@@ -129,7 +132,9 @@ class _BookingConfirmationPageState extends State<BookingConfirmationPage> {
                   const Divider(color: Colors.white24),
                   _infoText(
                     'Grand Total',
-                    '$currency ${getGrandTotal(schedule.discount, totalSeatsBooked, schedule.ticketPrice, schedule.processingFee)}',
+                    '$currency ${getGrandTotal(
+                        schedule.discount, totalSeatsBooked,
+                        schedule.ticketPrice, schedule.processingFee)}',
                     bold: true,
                     color: Colors.greenAccent,
                   ),
@@ -185,7 +190,7 @@ class _BookingConfirmationPageState extends State<BookingConfirmationPage> {
         ),
       ),
       validator: (value) =>
-          value == null || value.isEmpty ? emptyFieldErrMessage : null,
+      value == null || value.isEmpty ? emptyFieldErrMessage : null,
       onChanged: (value) => setState(() {}),
     );
   }
@@ -205,25 +210,40 @@ class _BookingConfirmationPageState extends State<BookingConfirmationPage> {
     );
   }
 
+  @override
+  void dispose() {
+    nameController.dispose();
+    emailController.dispose();
+    mobileController.dispose();
+    super.dispose();
+  }
+
   void _confirmBooking() {
+    print("presesed");
     if (_formKey.currentState!.validate()) {
-      // Your booking logic here
       final customer = Customer(
         customerName: nameController.text,
         mobile: mobileController.text,
         email: emailController.text,
       );
+
       final reservation = BusReservation(
         customer: customer,
         busSchedule: schedule,
-        timestamp: DateTime.now().millisecondsSinceEpoch,
+        timestamp: DateTime
+            .now()
+            .millisecondsSinceEpoch,
         departureDate: departureDate,
         totalSeatBooked: totalSeatsBooked,
         seatNumbers: seatNumbers,
         reservationStatus: reservationActive,
-        totalPrice: getGrandTotal(schedule.discount, totalSeatsBooked,
-            schedule.ticketPrice, schedule.processingFee),
+        totalPrice: getGrandTotal(
+            schedule.discount, totalSeatsBooked, schedule.ticketPrice,
+            schedule.processingFee),
+
       );
+      print("SENDING TO BACKEND: ${reservation.toJson()}");
+
       Provider.of<AppDataProvider>(context, listen: false)
           .addReservation(reservation)
           .then((response) {
@@ -233,17 +253,15 @@ class _BookingConfirmationPageState extends State<BookingConfirmationPage> {
         } else {
           showMsg(context, response.message);
         }
-      }).catchError((error) {
-        showMsg(context, 'Could Not save');
+      })
+          .catchError((error) {
+        showMsg(context, 'Could not save');
+        print("SENDING TO BACKEND: ${reservation.toJson()}");
+
       });
     }
   }
 
-  @override
-  void dispose() {
-    nameController.dispose();
-    emailController.dispose();
-    mobileController.dispose();
-    super.dispose();
-  }
+
 }
+
