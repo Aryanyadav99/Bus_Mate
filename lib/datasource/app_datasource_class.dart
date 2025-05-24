@@ -17,7 +17,7 @@ import 'package:http/http.dart' as http;
 import '../models/bus_route.dart';
 
 class AppDataSource extends DataSource {
-  final String baseUrl = 'http://10.0.2.2:8080/api/';
+  final String baseUrl = 'https://9fce-2409-40d2-1008-8741-8857-99e3-6811-bbf.ngrok-free.app/api/';
 
   Map<String, String> get header =>
       {

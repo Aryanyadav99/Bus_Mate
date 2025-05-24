@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../customwidgets/login_alert_dialog.dart';
-import '../datasource/temp_db.dart';
 import '../models/bus_model.dart';
 import '../models/bus_route.dart';
 import '../models/bus_schedule.dart';

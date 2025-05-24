@@ -3,9 +3,7 @@ import 'package:bus_reservation_flutter_starter/providers/app_data_provider.dart
 import 'package:bus_reservation_flutter_starter/utils/helper_functions.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
 import '../customwidgets/login_alert_dialog.dart';
-import '../datasource/temp_db.dart';
 import '../models/bus_model.dart';
 import '../utils/constants.dart';
 
